@@ -4,7 +4,7 @@ A python script to make you chat with ChatGPT by voice. Inspired by [GPTHunt](ht
 
 ## Requirement (Python >= 3.8.0)
     - PyAudio: accept the first human voice, hopefully the wake-up words.
-    - pvporcupine: detects wake-up words (here "Hello, Floppy" is trained online, which is the name of the dog in the Oxford tree).
+    - pvporcupine: detects wake-up words (here "Hello, Floppy" is trained online, and Floppy is the dog's name in the Oxford tree).
     - pvcobra: detects the wake-up words is finished
     - openai: Official API by OpenAI.
     - revChatGPT: Reverse Engineered ChatGPT API by OpenAI.
@@ -18,7 +18,7 @@ replace ``picovoice_api_key``, ``openai_api_key``, ``msazure_api_key``, ``msazur
 python chat.py
 ```
 
-and then speak out the wake-up words.
+and then speak out the wake-up words: Hello, Floppy!
 
 Have fun.
 
