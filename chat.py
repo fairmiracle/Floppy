@@ -1,3 +1,4 @@
+import os
 import struct
 import pyaudio
 import pvporcupine
@@ -7,11 +8,15 @@ import azure.cognitiveservices.speech as speechsdk
 from azure.cognitiveservices.speech import SpeechSynthesizer
 from revChatGPT.Official import Chatbot
 
-picovoice_api_key = 'xxxx'
-openai_api_key = 'xxxx'
-msazure_api_key = 'xxxx'
-msazure_api_region = "xxxx"
+picovoice_api_key = os.getenv('picovoice_api_key')
+openai_api_key = os.getenv('openai_api_key')
+msazure_api_key = os.getenv('msazure_api_key')
+msazure_api_region = os.getenv('msazure_api_region')
+
 porcupine_path = 'Hello-Floppy_en_windows_v2_1_0.ppn'
+hellowords = "我在这呢"
+goodbyewords = "再见"
+
 
 speech_config = speechsdk.SpeechConfig(subscription=msazure_api_key, region=msazure_api_region, speech_recognition_language="zh-CN")
 chatbot = Chatbot(api_key=openai_api_key)
@@ -40,8 +45,7 @@ def text2voiceazure(text):
 # voice==text
 def from_mic():
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
-    print("ChatBot: 请开始讲话\n")
-    #text2voiceazure("噔")
+    print("ChatBot: "+hellowords+"\n")
     result = speech_recognizer.recognize_once()
     # Checks result.
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
@@ -66,18 +70,17 @@ recording = False
 buffer = []
 silence_count = 0
 i = 0
-#text2voiceazure("噔噔")
 while True:
     i += 1
-    pcm = audio_stream.read(porcupine.frame_length) # 亮灯开始唤醒
+    pcm = audio_stream.read(porcupine.frame_length)
     _pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)
     
     if not recording:
         keyword_index = porcupine.process(_pcm)
         if keyword_index >= 0:
             # Insert detection event callback here
-            print("ChatBot: 我在这呢\n")
-            text2voiceazure("我在这呢")
+            print("ChatBot: "+hellowords+"\n")
+            text2voiceazure(hellowords)
             recording = True
             continue
         else:
@@ -85,7 +88,7 @@ while True:
     else:
         # 检测到silence 后处理
         text = from_mic()
-        if "再见" in text and len(text)<5:
+        if goodbyewords in text and len(text)<5:
             break
         resp = recognition_gpt3(text)
         text2voiceazure(resp)    
