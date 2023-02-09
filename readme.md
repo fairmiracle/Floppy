@@ -14,10 +14,11 @@ A python script to make you chat with ChatGPT by voice. Inspired by [GPTHunt](ht
 ## Run
 Apply the API keys from [picovoice](https://console.picovoice.ai), [OpenAI](https://openai.com/api), and [Azure](https://azure.microsoft.com/en-us/free/ai), and make sure to set the environment values ``picovoice_api_key``, ``openai_api_key``, ``msazure_api_key``, ``msazure_api_region`` first. 
 
-``porcupine_path`` is the wake-up words detection model file downloaded from [picovoice](https://console.picovoice.ai).
-``hellowords`` is what it say to start the chat.
-``goodbyewords`` is what you say to finish the chat.
-``speakfaster`` set True to speak faster by pyttsx3, False to speak more like human by azure synthesis. 
+In the beginning of the script, several variables can be set:
+ - ``porcupine_path`` is the wake-up words detection model file downloaded from [picovoice](https://console.picovoice.ai).
+ - ``hellowords`` is what it say to start the chat.
+ - ``goodbyewords`` is what you say to finish the chat.
+ - ``speakfaster`` set True to speak faster by pyttsx3, False to speak more like human by azure synthesis. 
 
 
 then
