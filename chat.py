@@ -4,6 +4,7 @@ import pyaudio
 import pvporcupine
 import pvcobra
 import openai
+import pyttsx3
 import azure.cognitiveservices.speech as speechsdk
 from azure.cognitiveservices.speech import SpeechSynthesizer
 from revChatGPT.Official import Chatbot
@@ -16,6 +17,7 @@ msazure_api_region = os.getenv('msazure_api_region')
 porcupine_path = 'Hello-Floppy_en_windows_v2_1_0.ppn'
 hellowords = "我在这呢"
 goodbyewords = "再见"
+speakfaster = False
 
 
 speech_config = speechsdk.SpeechConfig(subscription=msazure_api_key, region=msazure_api_region, speech_recognition_language="zh-CN")
@@ -34,6 +36,13 @@ def recognition_chatgpt(text):
     response = chatbot.ask(text, temperature=0.5)
     print('ChatGPT: '+response["choices"][0]["text"]+'\n')
     return response["choices"][0]["text"]
+
+# text==voice
+def text2voice(text):
+    engine = pyttsx3.init()
+    engine.setProperty('rate',200)
+    engine.say(text)
+    engine.runAndWait()
 
 def text2voiceazure(text):
     #speech_config.speech_synthesis_voice_name = "zh-CN-XiaochenNeural"
@@ -80,7 +89,7 @@ while True:
         if keyword_index >= 0:
             # Insert detection event callback here
             print("ChatBot: "+hellowords+"\n")
-            text2voiceazure(hellowords)
+            text2voice(hellowords) if speakfaster else text2voiceazure(hellowords)
             recording = True
             continue
         else:
@@ -91,5 +100,5 @@ while True:
         if goodbyewords in text and len(text)<5:
             break
         resp = recognition_gpt3(text)
-        text2voiceazure(resp)    
+        text2voice(resp) if speakfaster else text2voiceazure(resp) 
         continue
